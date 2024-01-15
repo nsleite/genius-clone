@@ -59,16 +59,12 @@ let gameOver = () =>{
 }
 
 let click = (colorNumber) => {
-    if(happening){
-        return;
-    }
     clickOrder[clickOrder.length] = colorNumber;
     getColor(colorNumber).classList.add("selected");
     setTimeout(()=>{
         getColor(colorNumber).classList.remove("selected");
         checkOrder();
     },150);
-    happening = true;
 }
 
 function getColor(number){
