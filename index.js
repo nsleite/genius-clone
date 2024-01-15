@@ -3,11 +3,11 @@ let gameOrder = [];
 let clickOrder = [];
 let score = 0;
 var time = 1000;
-
-// const red = document.querySelector(".red");
-// const blue = document.querySelector(".blue");
-// const green = document.querySelector(".green");
-// const yellow = document.querySelector(".yellow");
+var happening = false;
+const blue = document.querySelector('.blue');
+const red = document.querySelector('.red');
+const green = document.querySelector('.green');
+const yellow = document.querySelector('.yellow');
 
 let createOrder = () => {
     let randomColor = Math.floor(Math.random() * 4);
@@ -20,7 +20,6 @@ let createOrder = () => {
 }
 
 let lightColor = (element, index) => {
-    console.log('Element:', element);
     index = index * time;
     setTimeout( ()=> {
         element.classList.add("selected");
@@ -32,75 +31,63 @@ let lightColor = (element, index) => {
 }
 
 let checkOrder = () => {
-    for(let i in clickOrder){
-        if (clickOrder[i] != gameOrder[i]){
+    for(let i in gameOrder){
+        console.log(gameOrder, clickOrder);
+        if (clickOrder[i] !== gameOrder[i]){
             gameOver();
             break;
         }
-        score ++;
     }
     if(clickOrder.length == gameOrder.length){
-        alert(`SCORE: ${score}`);
+        alert(`SCORE: ${score}\n Next level...`);
         nextLevel();
     }
 }
 
-// let click = (color) =>{
-//     clickOrder[clickOrder.length] = color;
-// }
-
-
-// for(let i = 0; i<10; i++){
-//     createOrder();
-// }
+let nextLevel = () => {
+    score +=1;
+    clickOrder = [];
+    createOrder();
+}
 
 let gameOver = () =>{
     alert(`Game Over! \n Score: ${score}`);
+    score = 0;
     gameOrder = [];
     clickOrder = [];
     startGame();
 }
-// function click(){
-//     document.querySelectorAll("div")
-//             .forEach((element)=>{
-//                 element.addEventListener("click", function(event){
-//                     colorClicked = event.srcElement.classList.value;
-//                     console.log(colorClicked, getNumber(colorClicked));
-//                 });
-//             })
-// }
 
-let clickArray = (colorClicked) => {
-    numberClicked = getNumber(colorClicked);
-    if(numberClicked === undefined){
+let click = (colorNumber) => {
+    if(happening){
         return;
     }
-    clickOrder.push(numberClicked);
-    divElement = document.querySelector(`.${colorClicked}`)
-    divElement.classList.add("selected");
+    clickOrder[clickOrder.length] = colorNumber;
+    getColor(colorNumber).classList.add("selected");
     setTimeout(()=>{
-        divElement.classList.remove("selected");
+        getColor(colorNumber).classList.remove("selected");
+        checkOrder();
     },150);
-    
+    happening = true;
 }
 
-
-function click(){
-    document.addEventListener("click", function(event){
-        colorClicked = event.srcElement.classList.value;
-        clickArray(colorClicked);
-    });
-}
-function getNumber(color){
-    var colorNumber = {
-        "red" : 0,
-        "blue" : 1,
-        "green" : 2,
-        "yellow" : 3,
-    };
-    return (colorNumber[color]);
+function getColor(number){
+    var numberColor = {
+        0 : red,
+        1 : blue,
+        2 : green,
+        3 : yellow
+    }
+    return (numberColor[number]);
 }
 
-var arrays = [];
-// createOrder();
-click();
+let startGame = ()=>{
+    // alert("welcome, lets play!")
+    nextLevel();
+}
+startGame();
+
+red.onclick = () => click(0);
+blue.onclick = () => click(1);
+green.onclick = () => click(2);
+yellow.onclick = () => click(3);
