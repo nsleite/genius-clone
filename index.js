@@ -3,7 +3,9 @@ let gameOrder = [];
 let clickOrder = [];
 let score = 0;
 var time = 1000;
+var clickCount = 0;
 var happening = false;
+
 const blue = document.querySelector('.blue');
 const red = document.querySelector('.red');
 const green = document.querySelector('.green');
@@ -31,17 +33,19 @@ let lightColor = (element, index) => {
 }
 
 let checkOrder = () => {
+    if(clickOrder.length != gameOrder.length){
+        return;
+    }
     for(let i in gameOrder){
-        console.log(gameOrder, clickOrder);
+        console.log(i, gameOrder, clickOrder);
         if (clickOrder[i] !== gameOrder[i]){
             gameOver();
             break;
         }
     }
-    if(clickOrder.length == gameOrder.length){
-        alert(`SCORE: ${score}\n Next level...`);
-        nextLevel();
-    }
+    alert(`SCORE: ${score}\n Next level...`);
+    nextLevel();
+    
 }
 
 let nextLevel = () => {
@@ -58,13 +62,14 @@ let gameOver = () =>{
     startGame();
 }
 
-let click = (colorNumber) => {
+function click (event, colorNumber){
     clickOrder[clickOrder.length] = colorNumber;
     getColor(colorNumber).classList.add("selected");
     setTimeout(()=>{
         getColor(colorNumber).classList.remove("selected");
         checkOrder();
-    },150);
+        console.log(gameOrder, clickOrder);
+    },250);
 }
 
 function getColor(number){
@@ -83,7 +88,19 @@ let startGame = ()=>{
 }
 startGame();
 
-red.onclick = () => click(0);
-blue.onclick = () => click(1);
-green.onclick = () => click(2);
-yellow.onclick = () => click(3);
+red.addEventListener("click", (event) => {
+    event.preventDefault();
+    click(event,0)
+    }) ;
+blue.addEventListener("click", (event) => {
+    event.preventDefault();
+    click(event,1)
+    }) ;
+green.addEventListener("click", (event) => {
+    event.preventDefault();
+    click(event,2)
+    }) ;
+yellow.addEventListener("click", (event) => {
+    event.preventDefault();
+    click(event,3)
+    }) ;
