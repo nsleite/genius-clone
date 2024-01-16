@@ -37,15 +37,13 @@ let checkOrder = () => {
         return;
     }
     for(let i in gameOrder){
-        console.log(i, gameOrder, clickOrder);
         if (clickOrder[i] !== gameOrder[i]){
             gameOver();
             break;
         }
     }
     alert(`SCORE: ${score}\n Next level...`);
-    nextLevel();
-    
+    nextLevel(); 
 }
 
 let nextLevel = () => {
@@ -68,7 +66,6 @@ function click (event, colorNumber){
     setTimeout(()=>{
         getColor(colorNumber).classList.remove("selected");
         checkOrder();
-        console.log(gameOrder, clickOrder);
     },250);
 }
 
@@ -83,7 +80,7 @@ function getColor(number){
 }
 
 let startGame = ()=>{
-    // alert("welcome, lets play!")
+    alert("welcome, lets play!")
     nextLevel();
 }
 startGame();
